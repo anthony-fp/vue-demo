@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #app, input {
+            font-size: 24px;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Vue Demo</title>
+
+</head>
+<body>
+<div id="app">
+    <button @click="loadNFL">Load NFL Teams</button>
+    <hr>
+    <club_table sport="soccer" :table="clubs"></club_table>
+    <club_table v-if="nfl" sport="nfl" :table="nfl"></club_table>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    Vue.component('club_table', {
+        props: ['sport', 'table'],
+        template: '<table>\n' +
+            '        <tr v-for="club in table">\n' +
+            '            <td>{{sport}}</td>\n' +
+            '            <td>{{club.key}}</td>\n' +
+            '            <td>{{club.name}}</td>\n' +
+            '            <td>{{club.code}}</td>\n' +
+            '            <td>&nbsp;</td>\n' +
+            '        </tr>\n' +
+            '    </table>'
+    });
+
+    const app = new Vue({
+            el: '#app',
+            data: {
+                clubs: [
+                    {
+                        "key": "chelsea",
+                        "name": "Chelsea",
+                        "code": "CHE"
+                    },
+                    {
+                        "key": "arsenal",
+                        "name": "Arsenal",
+                        "code": "ARS"
+                    },
+                    {
+                        "key": "manutd",
+                        "name": "Manchester United",
+                        "code": "MUN"
+                    }
+                ],
+                nfl: null
+            },
+            methods: {
+                loadNFL() {
+                    axios.get('nfl.json').then(function (response) {
+                        this.nfl = response.data.teams;
+                    }.bind(this));
+                }
+            }
+        })
+    ;
+</script>
+</html>
