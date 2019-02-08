@@ -13,12 +13,12 @@
 </style>
 <head>
     <meta charset="UTF-8">
-    <title>Vue Demo</title>
+    <title>Red vs Blue</title>
 </head>
 <body>
 <div id="app">
     <div :class="color">{{ message }}</div>
-    <div @click="changeColor()" v-text="'Click here to change the color from ' + color"></div>
+    <button @click="changeColor()" v-text="'Click here to change the color from ' + color"></button>
 </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -26,7 +26,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'Hello World!',
+            message: 'Patrick Mahomes is pretty good too!',
             color: 'red'
         },
         methods: {
