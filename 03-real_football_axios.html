@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #app, input {
+            font-size: 24px;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Vue Demo</title>
+
+</head>
+<body>
+<div id="app">
+    <h3>Our amazing league has {{totalClubs}} {{isSoccer ? 'clubs' : 'teams'}}! Yay {{currentSport}}!</h3>
+    <button @click="loadNFL">Load NFL Teams</button>
+    <div>
+        <button v-if="nfl" @click="isSoccer = !isSoccer">Switch Sports</button>
+        <small v-else>Click the button above to fetch NFL data</small>
+    </div>
+    <hr/>
+    <table>
+        <tr v-for="club in (isSoccer ? clubs : nfl)">
+            <td>{{currentSport}}</td>
+            <td>{{club.key}}</td>
+            <td>{{club.name}}</td>
+            <td>{{club.code}}</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Add:</td>
+            <td v-for="field in ['key', 'name', 'code']" @keypress.enter="add()">
+                <input v-model="new_club[field]" :placeholder="field" :ref="'new_' + field">
+            </td>
+            <td>
+                <button @click="add()">Add Club</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    const app = new Vue({
+            el: '#app',
+            data: {
+                clubs: [
+                    {
+                        "key": "chelsea",
+                        "name": "Chelsea",
+                        "code": "CHE"
+                    },
+                    {
+                        "key": "arsenal",
+                        "name": "Arsenal",
+                        "code": "ARS"
+                    },
+                    {
+                        "key": "manutd",
+                        "name": "Manchester United",
+                        "code": "MUN"
+                    }
+                ],
+                nfl: null,
+                new_club: {
+                    key: null,
+                    name: null,
+                    code: null
+                },
+                isSoccer: true
+            },
+            methods: {
+                loadNFL() {
+                    axios.get('nfl.json').then(function (response) {
+                        this.nfl = response.data.teams;
+                    }.bind(this));
+                },
+                add() {
+                    //Really lazy error checking
+                    let valid = true;
+                    Object.keys(this.new_club).forEach(k => {
+                        if (!this.new_club[k]) {
+                            alert(k + ' is required');
+                            valid = false;
+                        }
+                    });
+                    if (valid) {
+                        if (this.isSoccer) {
+                            this.clubs.push(this.new_club);
+                        } else {
+                            this.nfl.push(this.new_club);
+                        }
+                        this.new_club = {
+                            key: null,
+                            name: null,
+                            code: null
+                        };
+                    }
+                }
+            },
+            computed: {
+                totalClubs() {
+                    return this.isSoccer ? this.clubs.length : this.nfl.length;
+                }
+                ,
+                currentSport() {
+                    return this.isSoccer ? 'Soccer' : 'NFL';
+                }
+            }
+            ,
+            mounted() {
+                //Similar to the document ready in jQuery
+                //See https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram for all the different hooks
+                this.$refs.new_key[0].focus();
+            }
+        })
+    ;
+</script>
+</html>

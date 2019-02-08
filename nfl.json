@@ -1,0 +1,24 @@
+{
+  "teams": [
+    {
+      "code": "ARI",
+      "name": "Arizona Cardinals",
+      "key": "Arizona"
+    },
+    {
+      "code": "ATL",
+      "name": "Atlanta Falcons",
+      "key": "Atlanta"
+    },
+    {
+      "code": "BAL",
+      "name": "Baltimore Ravens",
+      "key": "Baltimore"
+    },
+    {
+      "code": "BUF",
+      "name": "Buffalo Bills",
+      "key": "Buffalo"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #app {
+        font-size: 24px;
+    }
+    .red {
+        color: red;
+    }
+    .blue {
+        color: blue;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Demo</title>
+</head>
+<body>
+<div id="app">
+    <div :class="color">{{ message }}</div>
+    <div @click="changeColor()" v-text="'Click here to change the color from ' + color"></div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello World!',
+            color: 'red'
+        },
+        methods: {
+            changeColor() {
+                if (this.color === 'red') {
+                    this.color = 'blue';
+                } else {
+                    this.color = 'red';
+                }
+            }
+        }
+    })
+</script>
+</html>
